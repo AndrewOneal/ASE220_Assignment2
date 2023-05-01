@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.84.0">
+        <title>Album example · Bootstrap v5.0</title>
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+        <!-- Bootstrap core CSS -->
+        <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            }
+            @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+            }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <a href="index.html" class="navbar-brand d-flex align-items-center">
+                    <strong>Pet adoption website</strong>
+                    </a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="album py-5 bg-light">
+                <div class="container">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="cards">
+                    </div>
+                </div>
+                <button id="prev">Previous</button>
+                <button id="next">Next</button>
+            </div>
+        </main>
+        <footer class="text-muted py-5">
+            <div class="container">
+                <p class="float-end mb-1">
+                    <a href="index.html">Back to top</a>
+                </p>
+            </div>
+        </footer>
+        <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/getAllURLParams.js"></script>
+        <script src="./assets/data/data.js"></script>
+        <script>
+            let cards = document.getElementById('cards');
+            
+            let page = parseInt(getAllUrlParams().page);
+            populateCards(page);
+            
+            function populateCards(page) {
+              try {
+                let upperLimit = page * 6
+                let lowerLimit = upperLimit - 6;
+                cards.innerHTML = '';
+                for (let i = lowerLimit; i < upperLimit; i++) {
+                  if (pets[i].adoptable == true){
+                    cards.innerHTML+= `
+                        <div class="col">
+                          <div class="card shadow-sm">
+                          <img src="${pets[i].pictures[0]}" height="400"></text>
+                            <div class="card-body">
+                              <p class="card-text">${pets[i].detail}</p>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                  <a href="detail.html?pet=${i}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                                </div>
+                                <small class="text-muted">${pets[i].type}</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>`;
+                      }
+                  }
+              } catch {
+                alert('Error: page not found or end of pet list. Sending you back to homepage');
+                console.log(page);
+                document.location.href='index.html';
+              } 
+            }
+            
+            let nextButton = document.getElementById('next');
+            let prevButton = document.getElementById('prev');
+            
+            next.addEventListener("click", function() {
+              window.location = `index.html?page=${page + 1}`;
+              if ((page * 6 - 6) < pets.length) {
+                page++;
+                populateCards(page);
+              }
+            });
+            
+            prev.addEventListener("click", function() {
+              if (page >= 1) {
+                window.location = `index.html?page=${page - 1}`;
+                page--;
+                populateCards(page);
+              }
+            });
+            
+            if (getAllUrlParams().page == undefined) {
+              window.history.pushState({}, "", "index.html?page=1")
+              window.location.reload();
+            }
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.84.0">
+        <title>Album example · Bootstrap v5.0</title>
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+        <!-- Bootstrap core CSS -->
+        <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            }
+            @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+            }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+                <div class="container">
+                    <strong>Pet adoption website</strong>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="album py-5 bg-light">
+                <div class="container">
+                    <div id="container">
+                        <h1 id="name">Pet name</h1>
+                        <div id="info">Pet info goes here</div>
+                        <hr />
+                        <h2>Image Gallery</h2>
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="images">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="text-muted py-5">
+            <div class="container">
+                <p class="float-end mb-1">
+                    <a href="index.html">Back to pet list</a>
+                </p>
+            </div>
+        </footer>
+        <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/getAllURLParams.js"></script>
+        <script src="./assets/data/data.js"></script>
+        <script>
+            let i = parseInt(getAllUrlParams().pet);
+            
+            try {
+              let name = document.getElementById('name');
+              let info = document.getElementById('info');
+              let images = document.getElementById('images');
+            
+              name.innerHTML = pets[i].name;
+              info.innerHTML = `
+              <ul>
+                <li>Breed: ${pets[i].breed}</li>
+                <li>Neutered: ${pets[i].neutered}</li>
+                <li>Gender: ${pets[i].gender}</li>
+                <li>Vaccinated: ${pets[i].vaccinated}</li>
+                <li>Location: ${pets[i].location}</li>
+                <li>Breed: ${pets[i].breed}</li>
+                <li>Detail: ${pets[i].detail}</li>
+              </ul>
+              `;
+            
+              for(let j = 0; j < pets[i].pictures.length; j++) {
+                images.innerHTML += `
+                <div class="col">
+                    <div class="card shadow-sm">
+                      <img src="${pets[i].pictures[j]}" height="225">
+                    </div>
+                  </div>
+              `;
+              }
+            
+              if (pets[i].gender == "Male") {
+                document.getElementById("container").style.backgroundColor = "#ADD8E6";
+              }
+              else {
+                document.getElementById("container").style.backgroundColor = "#ffb6c1";
+              }
+            
+            } catch (e) {
+              console.log(e);
+              alert('Error: pet not found. Sending you back to homepage');
+              document.location.href="index.html"
+            }
+        </script>
+    </body>
+</html>
